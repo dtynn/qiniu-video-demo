@@ -26,4 +26,5 @@ if __name__ == '__main__':
     ret, err = qIo.put_file(uptoken, key, filePath)
     print ret
     print err
-    print 'http://%s/%s' % (QINIU_DOMAIN, key)
+    if err is None:
+        print 'http://%s/%s' % (QINIU_DOMAIN, key)

@@ -29,4 +29,5 @@ if __name__ == '__main__':
     ret, err = qIo.put(uptoken, key, data)
     print ret
     print err
-    print 'http://%s/%s' % (QINIU_DOMAIN, key)
+    if err is None:
+        print 'http://%s/%s' % (QINIU_DOMAIN, key)
