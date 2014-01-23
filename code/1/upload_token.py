@@ -17,13 +17,3 @@ qConf.SECRET_KEY = SECRET_KEY
 if __name__ == '__main__':
     putPolicy = qRs.PutPolicy(scope=BUCKET)
     uptoken = putPolicy.token()
-
-    filePath = '../files/test.jpg'
-
-    key = 'upload_basic.jpg'
-
-    #上传结果
-    ret, err = qIo.put_file(uptoken, key, filePath)
-    print ret
-    print err
-    print 'http://%s/%s' % (QINIU_DOMAIN, key)
