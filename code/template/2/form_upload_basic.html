@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Upload App</title>
+</head>
+<body>
+<form method="post" action="http://up.qiniu.com" enctype="multipart/form-data">
+    Token: <input type="text" name="token" placeholder="token" value="{{ token }}"><br>
+    Key: <input type="text" name="key" placeholder="key" value="form_upload"><br>
+    File: <input type="file" name="file"><br>
+    <button type="submit">上传</button>
+</form>
+</body>
+</html>
