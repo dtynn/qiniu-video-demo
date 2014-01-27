@@ -63,7 +63,7 @@ class CallbackHdl(tornado.web.RequestHandler):
 
         auth = str(self.request.headers.get('Authorization'))
         requestBody = self.request.body
-        authToken = mac.sign(requestBody)
+        authToken = mac.sign('/callback\n%s' % (requestBody,))
         valid = auth == 'QBox %s' % (authToken,)
         if valid is not True:
             msg['code'] = 1
