@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Upload App</title>
+    <link href="static/css/default.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ static_url('js/swfupload.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/swfupload.queue.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/utils.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/fileprogress.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/handlers_simple.js') }}"></script>
+</head>
+<body>
+<div id="content">
+    <form id="form1" action="" method="post" enctype="multipart/form-data">
+        <div class="fieldset flash" id="fsUploadProgress">
+            <span class="legend">上传列表</span>
+        </div>
+        <div id="divStatus">0 Files Uploaded</div>
+
+        <div style="padding-left: 5px;">
+            <span id="spanButtonPlaceholder1"></span>
+            <input id="btnCancel" type="button" value="Cancel All Uploads" onclick="swfu.cancelQueue();" disabled="disabled" style="margin-left: 2px; height: 22px; font-size: 8pt;" />
+        </div>
+    </form>
+</div>
+<div id="imgUrl">
+
+</div>
+</body>
+<script type="text/javascript">
+    var swfu;
+
+
+    function fileDialogComplete(numFilesSelected, numFilesQueued) {
+        try {
+            if (numFilesSelected === 1) {
+                document.getElementById(this.customSettings.cancelButtonId).disabled = false;
+                getToken(this.customSettings.uptoken_api ,this)
+            } else {
+                console.log(numFilesSelected + ' file(s) selected');
+            }
+            /* I want auto start the upload and I can do that here */
+            //this.startUpload();
+        } catch (ex)  {
+            this.debug(ex);
+        }
+    }
+
+    /*
+     * 定义一个文件上传前要执行的业务逻辑
+     */
+    function uploadStart(file) {
+        try {
+            var progress = new FileProgress(file, this.customSettings.progressTarget);
+            progress.setStatus("Uploading...");
+            progress.toggleCancel(true, this);
+            //新增自定义变量 x:fname
+            this.addPostParam("x:fname", file.name);
+        }
+        catch (ex) {}
+
+        return true;
+    }
+
+    /*
+     * 定义一个文件上传成功后要处理的业务逻辑
+     */
+    function uploadSuccess(file, serverData) {
+        try {
+            var progress = new FileProgress(file, this.customSettings.progressTarget);
+            progress.setComplete();
+            progress.setStatus("Complete.");
+            progress.toggleCancel(false);
+            var ret = eval('(' + serverData + ')');
+            //按实际的应用需求修改判断上传成功的标准
+            if (ret.key) {
+                alert("上传成功,文件key为:" + ret.key);
+            } else {
+                alert("上传失败");
+            }
+
+        } catch (ex) {
+            this.debug(ex);
+        }
+    }
+
+    function getToken(api, swfu) {
+        $.ajax({
+            url: api,
+            type: 'GET',
+            dataType: 'json',
+            cache: false,
+            success: function(res) {
+                if (res.code === 0 && res.type === 'token') {
+                    //将token加入表单
+                    swfu.addPostParam("token", res.token);
+                    //启动上传
+                    swfu.startUpload();
+                }
+            },
+            error:function(XmlHttpRequest,textStatus, errorThrown) {
+
+            }
+        });
+    }
+
+    window.onload = function() {
+        var settings = {
+            flash_url : "{{ static_url('swf/swfupload.swf') }}",
+            upload_url:  "http://up.qiniu.com",
+            post_params: {},
+            use_query_string: false,
+            file_post_name: "file",
+            file_size_limit : "30 MB",
+            file_types : "*.*;*",
+            file_types_description: "Video File",
+            file_upload_limit : 100,
+            file_queue_limit : 1,
+            custom_settings : {
+                uptoken_api: '{{ selfHost }}/token',
+                fileUniqIdMapping : {},
+                progressTarget : "fsUploadProgress",
+                cancelButtonId : "btnCancel"
+            },
+            debug: false,
+            //debug: true,
+
+            // Button Settings
+            button_image_url : "{{ static_url('img/XPButtonUploadText_61x22.png') }}",
+            button_placeholder_id : "spanButtonPlaceholder1",
+            button_width: 61,
+            button_height: 22,
+
+            // The event handler functions are defined in handlers.js
+            file_queued_handler : fileQueued,
+            file_queue_error_handler : fileQueueError,
+            file_dialog_complete_handler : fileDialogComplete,
+            upload_start_handler : uploadStart,
+            upload_progress_handler : uploadProgress,
+            upload_error_handler : uploadError,
+            upload_success_handler : uploadSuccess,
+            upload_complete_handler : uploadComplete,
+            queue_complete_handler : queueComplete	// Queue plugin event
+        };
+
+        swfu = new SWFUpload(settings);
+    };
+</script>
+</html>

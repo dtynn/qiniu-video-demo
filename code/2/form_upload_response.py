@@ -22,6 +22,7 @@ QINIU_DOMAIN = ''
 #for return & callback
 HOST = 'http://'  # http://www.abc.com or http://135.79.24.68
 PORT = 51234
+selfHost = '%s:%s' % (HOST, PORT)
 
 qConf.ACCESS_KEY = ACCESS_KEY
 qConf.SECRET_KEY = SECRET_KEY
@@ -29,10 +30,10 @@ qConf.SECRET_KEY = SECRET_KEY
 
 class UploadHdl(tornado.web.RequestHandler):
     def get(self):
-        returnUrl = '%s:%s/return' % (HOST, PORT)
+        returnUrl = '%s/return' % (selfHost,)
         returnBody = '{"key": $(key), "mimeType": $(mimeType)}'
 
-        callbackUrl = '%s:%s/callback' % (HOST, PORT)
+        callbackUrl = '%s/callback' % (selfHost,)
         callbackBody = 'key=$(key)&mimeType=$(mimeType)'
 
         #只设置returnBody
