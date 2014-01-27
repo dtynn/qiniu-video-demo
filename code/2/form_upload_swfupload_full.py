@@ -31,7 +31,7 @@ selfHost = '%s:%s' % (HOST, PORT)
 
 class UploadHdl(tornado.web.RequestHandler):
     def get(self):
-        self.render('form_upload_swfupload.html', selfHost=selfHost)
+        self.render('form_upload_swfupload_full.html', selfHost=selfHost)
         return
 
 
