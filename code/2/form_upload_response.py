@@ -64,10 +64,10 @@ class UploadHdl(tornado.web.RequestHandler):
 
 class ReturnHdl(tornado.web.RequestHandler):
     def get(self):
-        uploadRet = self.get_argument('upload_ret', '')
+        uploadRet = str(self.get_argument('upload_ret', ''))
         if not uploadRet:
-            errCode = self.get_argument('code', '')
-            errDetail = self.get_argument('error', 'something error')
+            errCode = str(self.get_argument('code', ''))
+            errDetail = str(self.get_argument('error', 'something error'))
             msg = dict()
             msg['type'] = 'error'
             msg['code'] = errCode
