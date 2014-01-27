@@ -50,16 +50,36 @@ class TokenHdl(tornado.web.RequestHandler):
 
 
 class CallbackHdl(tornado.web.RequestHandler):
-    def get(self):
+    def post(self):
         mac = qDigest.Mac()
+        msg = dict()
         key = self.get_argument('key')
         etag = self.get_argument('etag')
         fsize = self.get_argument('fsize')
         fname = self.get_argument('fname')
-        auth = self.request.headers.get('Authorization')
+
+        #print key, etag, fsize, fname
+
+        auth = str(self.request.headers.get('Authorization'))
         requestBody = self.request.body
-        print auth
-        print requestBody
+        authToken = mac.sign(requestBody)
+        valid = auth == 'QBox %s' % (authToken,)
+        if valid is not True:
+            msg['code'] = 1
+            msg['detail'] = 'invalid callback request'
+            self.write(json.dumps(msg))
+            return
+
+        doDataInsert = True  # 插入数据
+        if doDataInsert is not True:
+            msg['code'] = 1
+            msg['detail'] = 'database error'
+            self.write(json.dumps(msg))
+            return
+
+        msg['code'] = 0
+        msg['key'] = key
+        self.write(json.dumps(msg))
         return
 
 
