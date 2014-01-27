@@ -51,6 +51,7 @@ class TokenHdl(tornado.web.RequestHandler):
 
 class CallbackHdl(tornado.web.RequestHandler):
     def post(self):
+        self.set_header('Content-Type', 'application/json')
         mac = qDigest.Mac()
         msg = dict()
         key = self.get_argument('key')
