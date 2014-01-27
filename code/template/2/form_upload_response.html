@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Upload App</title>
+</head>
+<body>
+<form method="post" action="http://up.qiniu.com" enctype="multipart/form-data">
+    <h4>只设置returnBody</h4>
+    Token: <input type="text" name="token" placeholder="token" value="{{ token1 }}"><br>
+    File: <input type="file" name="file"><br>
+    <button type="submit">上传</button>
+</form>
+<br>
+<form method="post" action="http://up.qiniu.com" enctype="multipart/form-data">
+    <h4>只设置returnUrl</h4>
+    Token: <input type="text" name="token" placeholder="token" value="{{ token2 }}"><br>
+    File: <input type="file" name="file"><br>
+    <button type="submit">上传</button>
+</form>
+<br>
+<form method="post" action="http://up.qiniu.com" enctype="multipart/form-data">
+    <h4>设置returnUrl和returnBody</h4>
+    Token: <input type="text" name="token" placeholder="token" value="{{ token3 }}"><br>
+    File: <input type="file" name="file"><br>
+    <button type="submit">上传</button>
+</form>
+<br>
+<form method="post" action="http://up.qiniu.com" enctype="multipart/form-data">
+    <h4>设置callback和callbackBody</h4>
+    Token: <input type="text" name="token" placeholder="token" value="{{ token4 }}"><br>
+    File: <input type="file" name="file"><br>
+    <button type="submit">上传</button>
+</form>
+<br>
+</body>
+</html>
