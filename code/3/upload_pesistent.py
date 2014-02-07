@@ -31,7 +31,7 @@ selfHost = '%s:%s' % (HOST, PORT)
 
 class UploadHdl(tornado.web.RequestHandler):
     def get(self):
-        self.render('form_upload_swfupload_full.html', selfHost=selfHost)
+        self.render('upload_persistent.html', selfHost=selfHost)
         return
 
 
@@ -103,7 +103,7 @@ class NotifyHdl(tornado.web.RequestHandler):
 
 settings = dict(
     debug=False,
-    template_path='../template/2',
+    template_path='../template/3',
     static_path=os.path.abspath('../static'),
 )
 
