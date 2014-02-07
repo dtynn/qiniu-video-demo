@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>视频列表</title>
+    <link href="static/css/default.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div>
+        <table frame="box" rules="cols">
+            <tr>
+                <th>文件名</th>
+                <th>大小</th>
+                <th>上传时间</th>
+                <th>状态</th>
+            </tr>
+            {% if vList %}
+            {% for v in vList %}
+            <tr>
+                <td>{{ v['file_name'] }}</td>
+                <td>{{ v['file_size'] }}</td>
+                <td>{{ time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(v['created_at'])) }}</td>
+                <td>
+                    {% if v['pstatus'] == 0 %}
+                    <a href="/player?vid={{ v['vid'] }}" target="_blank">可观看</a>
+                    {% else %}
+                    {{ status.get(v['pstatus'], '等待处理') }}
+                    {% end %}
+                </td>
+            </tr>
+            {% end %}
+            {% else %}
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            {% end %}
+        </table>
+    </div>
+    <div>
+        <a href="/upload">去上传</a>
+    </div>
+</body>
+<style type="text/css">
+    th, td {padding: 10px;text-align: center}
+</style>
+</html>
