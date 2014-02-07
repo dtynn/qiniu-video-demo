@@ -93,6 +93,7 @@ class NotifyHdl(tornado.web.RequestHandler):
         mimeType = 'application/json'
         if self.request.headers.get('Content-Type', '') == mimeType:
             data = self.request.body
+            print data
             dataObj = json.loads(data)
             pid = dataObj.get('id')
             status = dataObj.get('code')
