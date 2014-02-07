@@ -35,12 +35,6 @@ dbPath = 'qvideo.db'
 miniData = mData(dbPath)
 
 
-class UploadHdl(tornado.web.RequestHandler):
-    def get(self):
-        self.render('upload_persistent.html', selfHost=selfHost)
-        return
-
-
 class TokenHdl(tornado.web.RequestHandler):
     def get(self):
         putPolicy = qRs.PutPolicy(scope=BUCKET)
@@ -124,7 +118,7 @@ class PageListHdl(tornado.web.RequestHandler):
             3: '处理失败',
             4: '回调失败',
         }
-        self.render('video_demo_all.html', vList=videoList, status=status, time=time)
+        self.render('video_demo_list.html', vList=videoList, status=status, time=time)
         return
 
 
@@ -152,7 +146,9 @@ settings = dict(
 
 
 urls = [
-    (r'/', UploadHdl),
+    (r'/', PageListHdl),
+    (r'/upload', PageUploadHdl),
+    (r'/player', PagePlayerHdl),
     (r'/token', TokenHdl),
     (r'/callback', CallbackHdl),
     (r'/notify', NotifyHdl),
